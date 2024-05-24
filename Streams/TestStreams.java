@@ -1,8 +1,7 @@
 package Streams;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,5 +36,19 @@ public class TestStreams {
 
         arrayLis.stream().collect(Collectors.partitioningBy(i->i%2==0));
         arrayLis.forEach(n-> System.out.println(n));
+
+        List<Integer> nums = Arrays.asList(1,2,3,4,5,1,2,3,4);
+
+        int res = nums.stream().distinct().sorted(Comparator.reverseOrder()).skip(1).findFirst().get();
+        double avg = nums.stream().mapToDouble(e->e).average().getAsDouble();
+
+        Set<Integer> dup = nums.stream().filter(e-> Collections.frequency(nums, e)>1).collect(Collectors.toSet());
+        List<Integer> odd = nums.stream().filter(e->e%2!=0).collect(Collectors.toList());
+
+        Map<Integer, Long> freq = nums.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        int[] intArray = {1,2,3,4,1,2,3};
+        Map<Integer, Long> arrInt = Arrays.stream(intArray).boxed().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println("SL-"+ res+" Avg-"+avg+" dup"+dup+" Odd-"+odd+" freq " +freq);
     }
 }
